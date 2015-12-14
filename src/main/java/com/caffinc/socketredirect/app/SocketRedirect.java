@@ -1,18 +1,19 @@
-/**
- * SocketRedirect v0.1 - Simple socket redirection code
- * 
- * @author Testware
- */
 package com.caffinc.socketredirect.app;
+
+import com.caffinc.socketredirect.exceptions.NotEnoughParametersException;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
-import com.caffinc.socketredirect.exceptions.NotEnoughParametersException;
 
 
+/**
+ * SocketRedirect v0.1 - Simple socket redirection code
+ *
+ * @author Testware
+ */
 public class SocketRedirect
 {
     private static final String VERSION_INFO = "SocketRedirect v0.2\n(c) Testware";
@@ -54,7 +55,7 @@ public class SocketRedirect
 
         try {
             // Start listening
-            @SuppressWarnings ( "resource") ServerSocket server = new ServerSocket( inputPort );
+            @SuppressWarnings ("resource") ServerSocket server = new ServerSocket( inputPort );
             System.out.println( "Listening on port " + inputPort + " for new connections..." );
 
             // Wait for infinite connections (Default max 50 active connections)
@@ -69,7 +70,7 @@ public class SocketRedirect
                     OutputStream serverOut = clientConnection.getOutputStream();
 
                     // Connect to the target and start redirection
-                    @SuppressWarnings ( "resource") Socket targetCon = new Socket( host, outputPort );
+                    @SuppressWarnings ("resource") Socket targetCon = new Socket( host, outputPort );
                     InputStream targetIn = targetCon.getInputStream();
                     OutputStream targetOut = targetCon.getOutputStream();
 
@@ -79,7 +80,8 @@ public class SocketRedirect
                     outgoing.start();
                     incoming.start();
 
-                    System.out.println( "Established a redirect from " + clientConnection.getInetAddress() + " to " + host );
+                    System.out
+                        .println( "Established a redirect from " + clientConnection.getInetAddress() + " to " + host );
                 } catch ( IOException e ) {
                     e.printStackTrace();
                 }
@@ -98,14 +100,15 @@ public class SocketRedirect
 
     private static String getUsageMessage()
     {
-        return "Usage:\njava -jar socketredirect.jar -i<input port> -o<output port> -h<host>\nEg.: java -jar socketredirect.jar -i6000 -o6667 -hirc.rizon.net";
+        return "Usage:\njava -jar socketredirect.jar -i<input port> -o<output port> -h<host>\nEg.: java -jar "
+            + "socketredirect.jar -i6000 -o6667 -hirc.rizon.net";
     }
 }
 
 
 /**
  * Reads from the input stream and writes to the output stream
- * 
+ *
  * @author Testware
  */
 class RedirectThread extends Thread
@@ -127,7 +130,7 @@ class RedirectThread extends Thread
         byte[] buffer = new byte[1024];
         int bytesRead;
         try {
-            for ( ;; ) {
+            for (; ; ) {
                 bytesRead = in.read( buffer );
                 if ( bytesRead == -1 ) {
                     out.close();
